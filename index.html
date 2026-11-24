@@ -5,184 +5,146 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#087f5b">
-<title>Loanzyra</title>
-
+<title>Loanzyra - Loan Manager</title>
+<link rel="manifest" href="manifest.json">
 <style>
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f1f5f3;
-  color: #18352c;
-}
-
-header {
-  background: #087f5b;
-  color: white;
-  padding: 22px;
-}
-
-header h1 {
-  margin: 0;
-  font-size: 28px;
-}
-
-header p {
-  margin-bottom: 0;
-  opacity: 0.9;
-}
-
-main {
-  padding: 16px;
-}
-
-.card {
-  background: white;
-  padding: 18px;
-  border-radius: 14px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 8px #0000000a;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.stat {
-  background: white;
-  padding: 15px;
-  border-radius: 12px;
-}
-
-.stat p {
-  color: #718078;
-  font-size: 13px;
-}
-
-.stat h2 {
-  color: #087f5b;
-  font-size: 21px;
-  margin: 5px 0;
-}
-
-input, select {
-  width: 100%;
-  padding: 12px;
-  margin: 7px 0 14px;
-  border: 1px solid #d5dfd9;
-  border-radius: 8px;
-  font-size: 15px;
-}
-
-button {
-  background: #087f5b;
-  color: white;
-  border: none;
-  padding: 13px;
-  border-radius: 8px;
-  width: 100%;
-  font-size: 15px;
-  font-weight: bold;
-}
-
-h3 {
-  margin-top: 0;
-}
-
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f7f5;color:#18352c}
+header{background:#087f5b;color:white;padding:22px 16px}
+header h1{margin:0;font-size:26px}
+header p{margin:6px 0 0;font-size:13px}
+main{max-width:850px;margin:auto;padding:16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{background:white;padding:16px;border-radius:13px;margin-bottom:15px;box-shadow:0 2px 9px #0000000c}
+.metric{background:#e4f5ed;border-radius:10px;padding:13px}
+.metric small{display:block;color:#547166;font-size:12px}
+.metric strong{display:block;font-size:19px;margin-top:7px;overflow-wrap:anywhere}
+h2{font-size:18px;margin:0 0 15px}
+input{width:100%;padding:12px;margin:6px 0 12px;border:1px solid #ccd9d2;border-radius:8px;font-size:15px}
+label{font-size:13px;font-weight:bold}
+button{border:0;background:#087f5b;color:white;padding:12px 16px;border-radius:8px;font-size:14px;font-weight:bold;cursor:pointer}
+button:active{opacity:.8}
+.full{width:100%}
+.secondary{background:#e4f5ed;color:#087f5b}
+.customer{border:1px solid #e0e9e4;border-radius:10px;padding:14px;margin:12px 0}
+.customer h3{margin:0 0 7px}
+.info{font-size:13px;line-height:1.8;color:#425c51}
+.balance{color:#b45309;font-weight:bold}
+.paid{color:#087f5b;font-weight:bold}
+.result{background:#e4f5ed;padding:13px;border-radius:8px;margin-top:12px;font-weight:bold}
+details{margin-top:12px;border-top:1px solid #e3e9e5;padding-top:10px}
+summary{cursor:pointer;color:#087f5b;font-weight:bold;font-size:14px}
+.history{font-size:13px;padding:8px;background:#f4f8f5;margin-top:7px;border-radius:7px}
+.empty{text-align:center;color:#718078;padding:20px;font-size:14px}
+footer{text-align:center;color:#718078;font-size:12px;padding:20px}
+@media(max-width:420px){.metric strong{font-size:16px}}
 </style>
 </head>
-
 <body>
 
 <header>
-  <h1>Loanzyra</h1>
-  <p>Smart Loan Management System</p>
+<h1>Loanzyra</h1>
+<p>Smart Loan Management System</p>
 </header>
 
 <main>
 
 <div class="grid">
-
-  <div class="stat">
-    <p>Total Customers</p>
-    <h2 id="customers">0</h2>
-  </div>
-
-  <div class="stat">
-    <p>Total Loans</p>
-    <h2 id="loans">₹0</h2>
-  </div>
-
-  <div class="stat">
-    <p>Total Collection</p>
-    <h2 id="collection">₹0</h2>
-  </div>
-
-  <div class="stat">
-    <p>Pending Amount</p>
-    <h2 id="pending">₹0</h2>
-  </div>
-
+<div class="metric">
+<small>Total Customers</small>
+<strong id="customers">0</strong>
+</div>
+<div class="metric">
+<small>Total Loans</small>
+<strong id="loans">₹0</strong>
+</div>
+<div class="metric">
+<small>Total Collection</small>
+<strong id="collection">₹0</strong>
+</div>
+<div class="metric">
+<small>Pending Balance</small>
+<strong id="pending">₹0</strong>
+</div>
 </div>
 
 <div class="card">
-  <h3>➕ Add New Customer</h3>
+<h2>➕ Add New Customer</h2>
 
-  <label>Customer Name</label>
-  <input type="text" id="customerName" placeholder="Enter name">
+<label>Customer Name</label>
+<input id="customerName" placeholder="Enter customer name">
 
-  <label>Mobile Number</label>
-  <input type="tel" id="mobile" placeholder="Enter mobile number">
+<label>Mobile Number</label>
+<input id="mobile" type="tel" maxlength="10" placeholder="10 digit mobile number">
 
-  <label>Loan Amount (₹)</label>
-  <input type="number" id="loanAmount" placeholder="Enter amount">
+<label>Loan Amount (₹)</label>
+<input id="loanAmount" type="number" min="1" placeholder="Enter loan amount">
 
-  <label>Annual Interest Rate (%)</label>
-  <input type="number" id="interest" placeholder="Enter interest rate">
+<label>Annual Interest Rate (%)</label>
+<input id="interest" type="number" min="0" step="0.01" placeholder="Example: 12">
 
-  <label>Duration (Months)</label>
-  <input type="number" id="duration" placeholder="Enter months">
+<label>Loan Duration (Months)</label>
+<input id="duration" type="number" min="1" placeholder="Example: 12">
 
-  <button onclick="addCustomer()">Save Customer</button>
+<button class="full" onclick="addCustomer()">Save Customer</button>
 </div>
 
 <div class="card">
-  <h3>EMI Calculator</h3>
+<h2>🧮 EMI Calculator</h2>
 
-  <label>Loan Amount</label>
-  <input type="number" id="calcAmount" placeholder="Loan amount">
+<label>Loan Amount (₹)</label>
+<input id="calcAmount" type="number" placeholder="Enter amount">
 
-  <label>Interest Rate (%)</label>
-  <input type="number" id="calcRate" placeholder="Annual interest">
+<label>Annual Interest Rate (%)</label>
+<input id="calcRate" type="number" step="0.01" placeholder="Enter interest rate">
 
-  <label>Months</label>
-  <input type="number" id="calcMonths" placeholder="Duration">
+<label>Duration (Months)</label>
+<input id="calcMonths" type="number" placeholder="Enter months">
 
-  <button onclick="calculateEMI()">Calculate EMI</button>
-
-  <h3 id="emiResult">Monthly EMI: ₹0</h3>
+<button class="full secondary" onclick="calculateEMI()">Calculate EMI</button>
+<div class="result" id="emiResult">Monthly EMI: ₹0</div>
 </div>
 
 <div class="card">
-  <h3>Customer Records</h3>
-  <div id="customerList">No customers added yet.</div>
+<h2>👥 Customer Records</h2>
+<div id="customerList">
+<div class="empty">No customers added yet.</div>
+</div>
 </div>
 
 </main>
+
+<footer>Loanzyra © 2026 | Loan Management</footer>
 
 <script>
 let customers = JSON.parse(
   localStorage.getItem("loanzyra_customers") || "[]"
 );
 
+// Old customer data migration
+customers.forEach(c => {
+  if (!Array.isArray(c.payments)) c.payments = [];
+  if (!c.totalPayable) {
+    c.totalPayable = Number(c.monthlyEMI || 0) * Number(c.months || 0);
+  }
+  if (c.paid === undefined) c.paid = 0;
+});
+
 function money(value) {
-  return "₹" + Number(value).toLocaleString("en-IN", {
+  return "₹" + Number(value || 0).toLocaleString("en-IN", {
     maximumFractionDigits: 2
+  });
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, function(ch) {
+    return {
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#39;"
+    }[ch];
   });
 }
 
@@ -195,11 +157,10 @@ function saveData() {
 
 function emi(amount, rate, months) {
   let r = rate / 1200;
-
   if (r === 0) return amount / months;
 
-  return amount * r * Math.pow(1 + r, months) /
-    (Math.pow(1 + r, months) - 1);
+  return amount * r * Math.pow(1+r, months) /
+    (Math.pow(1+r, months)-1);
 }
 
 function calculateEMI() {
@@ -207,7 +168,9 @@ function calculateEMI() {
   let rate = Number(document.getElementById("calcRate").value);
   let months = Number(document.getElementById("calcMonths").value);
 
-  if (amount <= 0 || rate < 0 || months <= 0) {
+  if (!Number.isFinite(amount) || amount <= 0 ||
+      !Number.isFinite(rate) || rate < 0 ||
+      !Number.isInteger(months) || months <= 0) {
     alert("Enter valid loan details");
     return;
   }
@@ -224,10 +187,14 @@ function addCustomer() {
   let months = Number(document.getElementById("duration").value);
 
   if (!name || !/^[0-9]{10}$/.test(mobile) ||
-      amount <= 0 || rate < 0 || months <= 0) {
-    alert("Please enter valid customer and loan details.");
+      !Number.isFinite(amount) || amount <= 0 ||
+      !Number.isFinite(rate) || rate < 0 ||
+      !Number.isInteger(months) || months <= 0) {
+    alert("Please enter valid customer details");
     return;
   }
+
+  let monthlyEMI = emi(amount, rate, months);
 
   customers.push({
     name: name,
@@ -235,8 +202,10 @@ function addCustomer() {
     amount: amount,
     rate: rate,
     months: months,
-    monthlyEMI: emi(amount, rate, months),
-    paid: 0
+    monthlyEMI: monthlyEMI,
+    totalPayable: monthlyEMI * months,
+    paid: 0,
+    payments: []
   });
 
   saveData();
@@ -253,52 +222,68 @@ function addCustomer() {
 
 function addPayment(index) {
   let customer = customers[index];
-  let remaining = customer.amount - customer.paid;
+  if (!customer) return;
 
-  if (remaining <= 0) {
-    alert("Loan is already fully paid.");
-    return;
-  }
-
-  let payment = Number(
-    prompt("Enter payment amount. Balance: " + money(remaining))
+  let remaining = Math.max(
+    0,
+    Number(customer.totalPayable) - Number(customer.paid || 0)
   );
 
-  if (!Number.isFinite(payment) || payment <= 0 ||
-      payment > remaining) {
-    alert("Invalid payment amount.");
+  if (remaining <= 0) {
+    alert("This loan is fully paid!");
     return;
   }
 
-  customer.paid += payment;
+  let input = prompt(
+    "Enter payment amount. Remaining: " + money(remaining)
+  );
+
+  if (input === null) return;
+
+  let payment = Number(input);
+
+  if (!Number.isFinite(payment) || payment <= 0) {
+    alert("Enter a valid payment amount");
+    return;
+  }
+
+  if (payment > remaining) {
+    alert("Payment cannot be more than remaining balance");
+    return;
+  }
+
+  if (!Array.isArray(customer.payments)) {
+    customer.payments = [];
+  }
+
+  customer.payments.push({
+    amount: payment,
+    date: new Date().toLocaleString("en-IN")
+  });
+
+  customer.paid = Number(customer.paid || 0) + payment;
+
   saveData();
   render();
 
   alert("Payment recorded successfully!");
 }
 
-function escapeHTML(value) {
-  return String(value).replace(/[&<>"']/g, function(char) {
-    return {
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#39;"
-    }[char];
-  });
-}
-
 function render() {
-  let totalLoans = 0;
-  let totalPaid = 0;
-  let totalPending = 0;
+  let totalLoans = customers.reduce(
+    (sum, c) => sum + Number(c.amount || 0), 0
+  );
 
-  customers.forEach(function(c) {
-    totalLoans += c.amount;
-    totalPaid += c.paid;
-    totalPending += Math.max(0, c.amount - c.paid);
-  });
+  let totalPaid = customers.reduce(
+    (sum, c) => sum + Number(c.paid || 0), 0
+  );
+
+  let totalPending = customers.reduce(
+    (sum, c) => sum + Math.max(
+      0,
+      Number(c.totalPayable || 0) - Number(c.paid || 0)
+    ), 0
+  );
 
   document.getElementById("customers").innerText = customers.length;
   document.getElementById("loans").innerText = money(totalLoans);
@@ -308,27 +293,54 @@ function render() {
   let list = document.getElementById("customerList");
 
   if (customers.length === 0) {
-    list.innerHTML = "No customers added yet.";
+    list.innerHTML = '<div class="empty">No customers added yet.</div>';
     return;
   }
 
-  list.innerHTML = customers.map(function(c, i) {
+  list.innerHTML = customers.map((c, index) => {
+    let paid = Number(c.paid || 0);
+    let payable = Number(c.totalPayable || 0);
+    let balance = Math.max(0, payable - paid);
+    let payments = Array.isArray(c.payments) ? c.payments : [];
+
+    let history = payments.length
+      ? payments.slice().reverse().map(p =>
+          '<div class="history">' +
+          escapeHTML(p.date) + ' — <b>' +
+          money(p.amount) + '</b></div>'
+        ).join("")
+      : '<div class="history">No payment recorded yet.</div>';
+
     return `
-      <div style="border-bottom:1px solid #ddd;padding:14px 0;">
+      <div class="customer">
         <h3>${escapeHTML(c.name)}</h3>
-        <p>Mobile: ${escapeHTML(c.mobile)}</p>
-        <p>Loan: ${money(c.amount)}</p>
-        <p>Monthly EMI: ${money(c.monthlyEMI)}</p>
-        <p>Paid: ${money(c.paid)}</p>
-        <p>Balance: ${money(Math.max(0, c.amount-c.paid))}</p>
-        <button onclick="addPayment(${i})">
-          Record Payment
-        </button>
+        <div class="info">
+          Mobile: ${escapeHTML(c.mobile)}<br>
+          Loan Amount: <b>${money(c.amount)}</b><br>
+          Interest Rate: ${escapeHTML(c.rate)}% yearly<br>
+          Duration: ${escapeHTML(c.months)} months<br>
+          Monthly EMI: <b>${money(c.monthlyEMI)}</b><br>
+          Total Payable: ${money(payable)}<br>
+          Total Paid: <span class="paid">${money(paid)}</span><br>
+          Remaining Balance: <span class="balance">${money(balance)}</span>
+        </div>
+
+        <br>
+        ${balance > 0
+          ? `<button onclick="addPayment(${index})">Record Payment</button>`
+          : '<button class="secondary" disabled>Loan Completed</button>'
+        }
+
+        <details>
+          <summary>Payment History (${payments.length})</summary>
+          ${history}
+        </details>
       </div>
     `;
   }).join("");
 }
 
+saveData();
 render();
 </script>
 
