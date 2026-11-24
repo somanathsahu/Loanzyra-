@@ -4,125 +4,332 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#16a34a">
+<meta name="theme-color" content="#087f5b">
 <title>Loanzyra</title>
-<link rel="manifest" href="manifest.json">
+
 <style>
 * {
-box-sizing: border-box;
+  box-sizing: border-box;
 }
+
 body {
-margin: 0;
-font-family: Arial, sans-serif;
-background: #f3f6f4;
-color: #17251c;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f1f5f3;
+  color: #18352c;
 }
+
 header {
-background: #16a34a;
-color: white;
-padding: 25px 18px;
-border-radius: 0 0 20px 20px;
+  background: #087f5b;
+  color: white;
+  padding: 22px;
 }
+
 header h1 {
-margin: 0;
-font-size: 28px;
+  margin: 0;
+  font-size: 28px;
 }
+
+header p {
+  margin-bottom: 0;
+  opacity: 0.9;
+}
+
 main {
-padding: 18px;
+  padding: 16px;
 }
+
 .card {
-background: white;
-padding: 20px;
-border-radius: 15px;
-margin-bottom: 16px;
+  background: white;
+  padding: 18px;
+  border-radius: 14px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px #0000000a;
 }
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.stat {
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+}
+
+.stat p {
+  color: #718078;
+  font-size: 13px;
+}
+
+.stat h2 {
+  color: #087f5b;
+  font-size: 21px;
+  margin: 5px 0;
+}
+
+input, select {
+  width: 100%;
+  padding: 12px;
+  margin: 7px 0 14px;
+  border: 1px solid #d5dfd9;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+button {
+  background: #087f5b;
+  color: white;
+  border: none;
+  padding: 13px;
+  border-radius: 8px;
+  width: 100%;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+h3 {
+  margin-top: 0;
+}
+
 </style>
 </head>
 
 <body>
 
 <header>
-<h1>Loanzyra</h1>
-<p>Your Smart Loan Management App</p>
+  <h1>Loanzyra</h1>
+  <p>Smart Loan Management System</p>
 </header>
 
 <main>
 
-<div class="card">
-<h2>Welcome to Loanzyra 👋</h2>
-<p>Manage your loans easily.</p>
+<div class="grid">
+
+  <div class="stat">
+    <p>Total Customers</p>
+    <h2 id="customers">0</h2>
+  </div>
+
+  <div class="stat">
+    <p>Total Loans</p>
+    <h2 id="loans">₹0</h2>
+  </div>
+
+  <div class="stat">
+    <p>Total Collection</p>
+    <h2 id="collection">₹0</h2>
+  </div>
+
+  <div class="stat">
+    <p>Pending Amount</p>
+    <h2 id="pending">₹0</h2>
+  </div>
+
 </div>
 
 <div class="card">
-<h3>Loan Calculator</h3>
+  <h3>➕ Add New Customer</h3>
 
-<label>Loan Amount (₹)</label>
-<input type="number" id="amount" placeholder="Enter loan amount">
+  <label>Customer Name</label>
+  <input type="text" id="customerName" placeholder="Enter name">
 
-<label>Annual Interest Rate (%)</label>
-<input type="number" id="rate" placeholder="Enter interest rate">
+  <label>Mobile Number</label>
+  <input type="tel" id="mobile" placeholder="Enter mobile number">
 
-<label>Loan Duration (Months)</label>
-<input type="number" id="months" placeholder="Enter months">
+  <label>Loan Amount (₹)</label>
+  <input type="number" id="loanAmount" placeholder="Enter amount">
 
-<button onclick="calculateLoan()">Calculate EMI</button>
+  <label>Annual Interest Rate (%)</label>
+  <input type="number" id="interest" placeholder="Enter interest rate">
 
-<h3 id="result">Monthly EMI: ₹0</h3>
+  <label>Duration (Months)</label>
+  <input type="number" id="duration" placeholder="Enter months">
+
+  <button onclick="addCustomer()">Save Customer</button>
+</div>
+
+<div class="card">
+  <h3>EMI Calculator</h3>
+
+  <label>Loan Amount</label>
+  <input type="number" id="calcAmount" placeholder="Loan amount">
+
+  <label>Interest Rate (%)</label>
+  <input type="number" id="calcRate" placeholder="Annual interest">
+
+  <label>Months</label>
+  <input type="number" id="calcMonths" placeholder="Duration">
+
+  <button onclick="calculateEMI()">Calculate EMI</button>
+
+  <h3 id="emiResult">Monthly EMI: ₹0</h3>
+</div>
+
+<div class="card">
+  <h3>Customer Records</h3>
+  <div id="customerList">No customers added yet.</div>
 </div>
 
 </main>
 
-<style>
-input {
-width: 100%;
-padding: 13px;
-margin: 8px 0 14px;
-border: 1px solid #ddd;
-border-radius: 9px;
-font-size: 16px;
-}
-
-button {
-width: 100%;
-padding: 14px;
-border: 0;
-border-radius: 9px;
-background: #16a34a;
-color: white;
-font-size: 16px;
-font-weight: bold;
-}
-
-#result {
-color: #16a34a;
-}
-</style>
-
 <script>
-function calculateLoan() {
-const p = Number(document.getElementById("amount").value);
-const r = Number(document.getElementById("rate").value) / 1200;
-const n = Number(document.getElementById("months").value);
+let customers = JSON.parse(
+  localStorage.getItem("loanzyra_customers") || "[]"
+);
 
-if (p <= 0 || r < 0 || n <= 0) {
-alert("Please enter valid loan details.");
-return;
+function money(value) {
+  return "₹" + Number(value).toLocaleString("en-IN", {
+    maximumFractionDigits: 2
+  });
 }
 
-const emi = r === 0
-? p / n
-: p * r * Math.pow(1 + r, n) /
-(Math.pow(1 + r, n) - 1);
-
-document.getElementById("result").innerText =
-"Monthly EMI: ₹" + emi.toFixed(2);
+function saveData() {
+  localStorage.setItem(
+    "loanzyra_customers",
+    JSON.stringify(customers)
+  );
 }
 
-if ("serviceWorker" in navigator) {
-window.addEventListener("load", function() {
-navigator.serviceWorker.register("./service-worker.js");
-});
+function emi(amount, rate, months) {
+  let r = rate / 1200;
+
+  if (r === 0) return amount / months;
+
+  return amount * r * Math.pow(1 + r, months) /
+    (Math.pow(1 + r, months) - 1);
 }
+
+function calculateEMI() {
+  let amount = Number(document.getElementById("calcAmount").value);
+  let rate = Number(document.getElementById("calcRate").value);
+  let months = Number(document.getElementById("calcMonths").value);
+
+  if (amount <= 0 || rate < 0 || months <= 0) {
+    alert("Enter valid loan details");
+    return;
+  }
+
+  document.getElementById("emiResult").innerText =
+    "Monthly EMI: " + money(emi(amount, rate, months));
+}
+
+function addCustomer() {
+  let name = document.getElementById("customerName").value.trim();
+  let mobile = document.getElementById("mobile").value.trim();
+  let amount = Number(document.getElementById("loanAmount").value);
+  let rate = Number(document.getElementById("interest").value);
+  let months = Number(document.getElementById("duration").value);
+
+  if (!name || !/^[0-9]{10}$/.test(mobile) ||
+      amount <= 0 || rate < 0 || months <= 0) {
+    alert("Please enter valid customer and loan details.");
+    return;
+  }
+
+  customers.push({
+    name: name,
+    mobile: mobile,
+    amount: amount,
+    rate: rate,
+    months: months,
+    monthlyEMI: emi(amount, rate, months),
+    paid: 0
+  });
+
+  saveData();
+  render();
+
+  document.getElementById("customerName").value = "";
+  document.getElementById("mobile").value = "";
+  document.getElementById("loanAmount").value = "";
+  document.getElementById("interest").value = "";
+  document.getElementById("duration").value = "";
+
+  alert("Customer saved successfully!");
+}
+
+function addPayment(index) {
+  let customer = customers[index];
+  let remaining = customer.amount - customer.paid;
+
+  if (remaining <= 0) {
+    alert("Loan is already fully paid.");
+    return;
+  }
+
+  let payment = Number(
+    prompt("Enter payment amount. Balance: " + money(remaining))
+  );
+
+  if (!Number.isFinite(payment) || payment <= 0 ||
+      payment > remaining) {
+    alert("Invalid payment amount.");
+    return;
+  }
+
+  customer.paid += payment;
+  saveData();
+  render();
+
+  alert("Payment recorded successfully!");
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, function(char) {
+    return {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    }[char];
+  });
+}
+
+function render() {
+  let totalLoans = 0;
+  let totalPaid = 0;
+  let totalPending = 0;
+
+  customers.forEach(function(c) {
+    totalLoans += c.amount;
+    totalPaid += c.paid;
+    totalPending += Math.max(0, c.amount - c.paid);
+  });
+
+  document.getElementById("customers").innerText = customers.length;
+  document.getElementById("loans").innerText = money(totalLoans);
+  document.getElementById("collection").innerText = money(totalPaid);
+  document.getElementById("pending").innerText = money(totalPending);
+
+  let list = document.getElementById("customerList");
+
+  if (customers.length === 0) {
+    list.innerHTML = "No customers added yet.";
+    return;
+  }
+
+  list.innerHTML = customers.map(function(c, i) {
+    return `
+      <div style="border-bottom:1px solid #ddd;padding:14px 0;">
+        <h3>${escapeHTML(c.name)}</h3>
+        <p>Mobile: ${escapeHTML(c.mobile)}</p>
+        <p>Loan: ${money(c.amount)}</p>
+        <p>Monthly EMI: ${money(c.monthlyEMI)}</p>
+        <p>Paid: ${money(c.paid)}</p>
+        <p>Balance: ${money(Math.max(0, c.amount-c.paid))}</p>
+        <button onclick="addPayment(${i})">
+          Record Payment
+        </button>
+      </div>
+    `;
+  }).join("");
+}
+
+render();
 </script>
 
 </body>
